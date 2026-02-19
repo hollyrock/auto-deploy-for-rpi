@@ -1,0 +1,38 @@
+---
+- name: Raspberry Pi Initial Setup
+  hosts: rpis
+  become: yes  # sudo権限で実行
+
+  tasks:
+    - name: OSのアップデート (apt upgrade)
+      apt:
+        update_cache: yes
+        upgrade: dist
+        autoremove: yes
+
+    - name: タイムゾーンを日本に設定
+      timezone:
+        name: Asia/Tokyo
+
+    - name: 便利なパッケージをインストール
+      apt:
+        name:
+          - git
+          - curl
+          - vim
+          - htop
+        state: present
+
+    - name: Docker インストールのための公式スクリプトを実行
+      shell: curl -fsSL https://get.docker.com | sh
+      args:
+        creates: /usr/bin/docker  # すでに存在する場合はスキップ
+
+    - name: 現在のユーザーをdockerグループに追加
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: 再起動（必要な設定を反映させるため）
+      reboot:

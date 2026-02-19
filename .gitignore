@@ -1,0 +1,14 @@
+user-data
+network-config
+inventory.ini
+
+# Environments
+.env
+.venv
+env/
+venv/
+*~
+
+### VSCode ###
+.DS_Store
+.vscode/*
