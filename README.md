@@ -10,7 +10,9 @@ Zsh script for macOS to make SSD of Raspberry Pi OS and setting initial configur
 
 Excelent toolset for configuring Pi devices remotely.
 
-## Cunfiguration files
+## Configuration files
+
+There are 3 configuration files required in the same folder with this script.
 
 ### user-data
 

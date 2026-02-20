@@ -8,7 +8,7 @@ TEMP_DMG="/tmp/rpi-imager.dmg"
 
 CURRENT_DIR="$(cd "$(dirname "$0")" && pwd)"
 USER_DATA="${CURRENT_DIR}/user-data"
-NET_DATA="${CURRENT_DIR}/network-configa"
+NET_CONFIG="${CURRENT_DIR}/network-config"
 
 echo "Searching for external SSD/USB drive..."
 DISKS=(${(f)"$(diskutil list external physical | grep '/dev/disk' | awk '{print $1}')"})
@@ -63,8 +63,16 @@ fi
 IMAGER_BIN="${MOUNT_PATH}/Raspberry Pi Imager.app/Contents/MacOS/rpi-imager"
 
 # NEED UNMOUNTING DISK BEFORE WRITING.
-echo "Unmounting $TARGET_DISK..."
 diskutil unmountDisk "$TARGET_DISK"
+
+echo "Download image will be flash all data in the SSD."
+echo "Are you sure to ERASE ALL DATA in SSD? [yes/NO]"
+read CONFIRM
+
+if [[ ! "$CONFIRM" =~ ^[yY]$ ]] ; then
+    echo "Cancel to make image."
+    exit 1
+fi
 
 # IMAGE WRITING
 echo "Writing image to $TARGET_DISK... (Sudo password may be required)"

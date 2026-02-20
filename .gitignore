@@ -1,6 +1,10 @@
 user-data
+user-data.*
 network-config
+network-config.*
+meta-data.*
 inventory.ini
+firstrun.sh
 
 # Environments
 .env
