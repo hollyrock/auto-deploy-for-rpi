@@ -90,8 +90,7 @@ herios ansible_host=xxx.xxx.xxx.xxx ansible_user=your_user_name
 
 ## Todo
 
-- Auto identification of the latest pi OS image from official site.
 - Add task scripts for ansible.
-- OS image selection dialog.
+- OS image selection option.
 - Update function for after configuration.
 - Backup/Restore image functions.

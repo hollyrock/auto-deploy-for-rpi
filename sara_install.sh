@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # Raspberry Lite ARM 64
-IMAGE_URL="https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2025-12-04/2025-12-04-raspios-trixie-arm64-lite.img.xz"
+IMAGE_URL="https://downloads.raspberrypi.org/raspios_lite_arm64_latest"
 
 DOWNLOAD_URL="https://downloads.raspberrypi.org/imager/"
 TEMP_DMG="/tmp/rpi-imager.dmg"
@@ -49,7 +49,7 @@ if [[ -z "$LATEST_VERSION" ]]; then
 fi
 
 echo "Downloading: $LATEST_VERSION"
-#curl -L "$DMG_URL" -o "$TEMP_DMG"
+curl -L "$DMG_URL" -o "$TEMP_DMG"
 
 MOUNT_INFO=$(hdiutil attach "$TEMP_DMG" -nobrowse -plist)
 MOUNT_DEV=$(echo "$MOUNT_INFO" | grep -A 1 "dev-entry" | grep "string" | sed 's/.*<string>\(.*\)<\/string>.*/\1/' | head -n 1)
@@ -82,8 +82,8 @@ sudo "$IMAGER_BIN" --cli \
     "$IMAGE_URL" "$TARGET_DISK"
 
 # CLEAN UP
-#echo "Cleaning up..."
+echo "Cleaning up..."
 hdiutil detach "$MOUNT_DEV"
-#rm "$TEMP_DMG"
+rm "$TEMP_DMG"
 
 echo "Done! SSD is ready."
