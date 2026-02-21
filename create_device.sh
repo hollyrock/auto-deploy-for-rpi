@@ -81,9 +81,15 @@ sudo "$IMAGER_BIN" --cli \
     --cloudinit-networkconfig "$NET_CONFIG" \
     "$IMAGE_URL" "$TARGET_DISK"
 
+# COPY ANSIBLE FILES
+diskutil mountDisk "$TARGET_DISK"
+sudo mkdir -p /Volumes/rootfs/usr/local/share/ansible
+sudo cp -r playbook.yaml ansible.cfg tasks /Volumes/rootfs/usr/local/share/ansible/
+diskutil unmountDisk "$TARGET_DISK"
+
 # CLEAN UP
-echo "Cleaning up..."
-hdiutil detach "$MOUNT_DEV"
-rm "$TEMP_DMG"
+#echo "Cleaning up..."
+#hdiutil detach "$MOUNT_DEV"
+#rm "$TEMP_DMG"
 
 echo "Done! SSD is ready."
