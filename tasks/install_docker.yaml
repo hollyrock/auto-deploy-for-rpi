@@ -1,0 +1,60 @@
+---
+- name: Package Install for Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+    state: present
+    update_cache: yes
+
+- name: Create folder for GPG of docker
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download GPG key
+  get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+
+- name: Check Repository URL
+  debug:
+    msg: "Repository URL : https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}/dists/bookworm/"
+
+- name: Add repository
+  apt_repository:
+    repo: >-
+      deb [arch={{ ansible_facts['architecture'] | replace('aarch64', 'arm64') | replace('x86_64', 'amd64') }} signed-by=/etc/apt/keyrings/docker.asc]
+      https://download.docker.com/linux/debian
+      bookworm stable
+    state: present
+    update_cache: yes
+    check_mnode: no
+    filename: docker
+
+- name: Install Docker engine
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+    update_cache: yes
+
+- name: Enabling Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add user to docker group (enable to run docker for non-root)
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes

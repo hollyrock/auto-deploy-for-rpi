@@ -1,0 +1,25 @@
+---
+- name: Add configuration to /home/pi/.vimrc if it does not exist
+  blockinfile:
+    path: /home/pi/.vimrc
+    create: true
+    mode: '0644'
+    state: present
+    backup: true
+    marker: ""
+    block: |
+      syntax on
+      set tabstop=4
+      set hlsearch
+  register: vimrc_conf_out
+
+- name: Change file ownership
+  ansible.builtin.file:
+    path: /home/pi/.vimrc
+    owner: pi
+    group: pi
+    mode: '0644'
+
+- name: output result
+  debug:
+    msg: "{{ vimrc_conf_out }}"

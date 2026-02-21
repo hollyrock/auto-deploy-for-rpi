@@ -1,0 +1,27 @@
+---
+- name: Pi Initial Setup
+  hosts: rpis
+  become: yes
+
+  tasks:
+    - name: Upgrade OS
+      ansible.builtin.import_tasks: tasks/upgrade_os.yaml
+      tags: upgrade
+
+    - name: Install Vim
+      ansible.builtin.import_tasks: tasks/install_vim.yaml
+
+    - name: Install Utilities
+      ansible.builtin.import_tasks: tasks/install_utils.yaml
+
+- name: Docker Setup
+  hosts:  rpis
+  become: yes
+
+  tasks:
+    - name: Docker Installation
+      ansible.builtin.import_tasks: tasks/install_docker.yaml
+
+    - name: Verify Docker installation
+      ansible.builtin.import_tasks: tasks/verify_docker.yaml
+      tags: verification

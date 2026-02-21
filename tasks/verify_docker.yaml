@@ -1,0 +1,12 @@
+---
+- name: ユーザー権限を反映させるために接続をリセット
+  ansible.builtin.meta: reset_connection
+
+- name: Dockerが実行可能か確認
+  ansible.builtin.command: docker info
+  changed_when: false
+  register: docker_info_output
+
+- name: 結果のサマリーを表示
+  ansible.builtin.debug:
+    msg: "Docker Server Version: {{ docker_info_output.stdout_lines | select('match', '^ Server Version:') | list | first | default('Unknown') }}"

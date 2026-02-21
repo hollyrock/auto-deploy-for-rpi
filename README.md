@@ -88,6 +88,21 @@ SAMPLE:
 herios ansible_host=xxx.xxx.xxx.xxx ansible_user=your_user_name
 ```
 
+## Setup SSH connection
+
+Ansible need ssh connection without password.
+
+- Make ssh keys with `ssh-keygen -t rsa`
+- Copy publich key to ssh folder in devices with `ssh-copy-id -i ~/.ssh/id_rsa.pub user@device`
+- Add device entry into `./ssh/config` like below.
+
+```text
+Host xxx.xxx.xxx.xxx
+    HostName YOUR-HOST-NAME
+    User YOUR-USER-NAME
+    IdentityFile ~/.ssh/id_rsa
+```
+
 ## Todo
 
 - Add task scripts for ansible.

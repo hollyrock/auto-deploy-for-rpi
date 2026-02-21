@@ -1,0 +1,12 @@
+## Docker installation for raspberry pi
+# Following install step on https://docs.docker.com/engine/install/debian/
+---
+- name: Add current user to Docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started

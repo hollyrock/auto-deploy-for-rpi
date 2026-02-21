@@ -1,0 +1,27 @@
+---
+- name: Install vim package
+  become: yes
+  apt:
+    name: vim
+    state: present
+    update_cache: yes
+  register: install_out
+  tags: install
+
+- name: Add configuration if it does not exist
+  blockinfile:
+    path: ~/.vimrc
+    create: true
+    mode: '0644'
+    state: present
+    backup: true
+    marker: ""
+    block: |
+      syntax on
+      set tabstop=4
+      set hlsearch
+  register: vimrc_conf_result
+
+- name: output result
+  debug:
+    msg: "{{ vimrc_conf_result }}"

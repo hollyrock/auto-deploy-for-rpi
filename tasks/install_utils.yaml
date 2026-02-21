@@ -1,0 +1,9 @@
+---
+- name: Install utils
+  become: yes
+  apt:
+    name:
+      - git
+      - curl
+      - htop
+    state: present
