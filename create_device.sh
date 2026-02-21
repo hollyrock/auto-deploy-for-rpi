@@ -11,6 +11,7 @@ USER_DATA="${CURRENT_DIR}/user-data"
 NET_CONFIG="${CURRENT_DIR}/network-config"
 
 echo "Searching for external SSD/USB drive..."
+echo
 DISKS=(${(f)"$(diskutil list external physical | grep '/dev/disk' | awk '{print $1}')"})
 
 if (( ${#DISKS} == 0)) ; then
@@ -25,7 +26,7 @@ for i in {1..${#DISKS[@]}}; do
     echo "[$i] $DISK - $SIZE ($INFO)"
 done
 
-echo -n "Please select drive number as target."
+echo -n "Please select drive number as target. :"
 read SELECTION
 
 if [[ ! "$SELECTION" =~ ^[0-9]+$ ]] || (( SELECTION < 1 || SELECTION > ${#DISKS[@]} )); then
@@ -36,7 +37,7 @@ fi
 TARGET_DISK="${DISKS[$SELECTION]}"
 RAW_DISK="${TARGET_DISK/disk/rdisk}"
 echo "Target: $TARGET_DISK ($RAW_DISK)"
-
+echo
 echo "Downloading for the latest rpi-imager..."
 
 # IDENTIFY THE LATEST IMAGE
@@ -66,7 +67,7 @@ IMAGER_BIN="${MOUNT_PATH}/Raspberry Pi Imager.app/Contents/MacOS/rpi-imager"
 diskutil unmountDisk "$TARGET_DISK"
 
 echo "Download image will be flash all data in the SSD."
-echo "Are you sure to ERASE ALL DATA in SSD? [y/N]"
+echo "Are you sure to ERASE ALL DATA in SSD? [y/N]:"
 read CONFIRM
 
 if [[ ! "$CONFIRM" =~ ^[yY]$ ]] ; then
@@ -81,15 +82,9 @@ sudo "$IMAGER_BIN" --cli \
     --cloudinit-networkconfig "$NET_CONFIG" \
     "$IMAGE_URL" "$TARGET_DISK"
 
-# COPY ANSIBLE FILES
-diskutil mountDisk "$TARGET_DISK"
-sudo mkdir -p /Volumes/rootfs/usr/local/share/ansible
-sudo cp -r playbook.yaml ansible.cfg tasks /Volumes/rootfs/usr/local/share/ansible/
-diskutil unmountDisk "$TARGET_DISK"
-
 # CLEAN UP
-#echo "Cleaning up..."
-#hdiutil detach "$MOUNT_DEV"
-#rm "$TEMP_DMG"
+echo "Cleaning up..."
+hdiutil detach "$MOUNT_DEV"
+rm "$TEMP_DMG"
 
-echo "Done! SSD is ready."
+echo "Done! Raspberry Pi SSD is ready."

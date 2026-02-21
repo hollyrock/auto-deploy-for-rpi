@@ -12,7 +12,7 @@ Excelent toolset for configuring Pi devices remotely.
 
 ## Configuration files
 
-There are 3 configuration files required in the same folder with this script.
+There are 3 configuration files required to create in the same folder with this script.
 
 ### user-data
 
@@ -105,7 +105,5 @@ Host xxx.xxx.xxx.xxx
 
 ## Todo
 
-- Add task scripts for ansible.
 - OS image selection option.
-- Update function for after configuration.
 - Backup/Restore image functions.

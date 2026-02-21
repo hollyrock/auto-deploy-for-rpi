@@ -25,3 +25,13 @@
     - name: Verify Docker installation
       ansible.builtin.import_tasks: tasks/verify_docker.yaml
       tags: verification
+
+- name: Private Tasks (If any for your private project)
+  hosts:  rpis
+  becaome: yes
+
+  tasks:
+    - name: Application Deployment (Run tasks if any under private folder)
+      ansible.builtin.include_tasks: "{{ item }}"
+      with_fileglob:
+        - "tasks/private/*.yaml"
