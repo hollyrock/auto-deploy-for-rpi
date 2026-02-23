@@ -1,6 +1,0 @@
----
-- name: Download sara application project to home directory
-  ansible.builtin.shell: |
-    wget -r -np -nH --cut-dirs=0 -P "$HOME" http://100.127.19.86:8880/sara-application
-  args:
-    creates: "{{ ansible_env.HOME }}/sara-application"
