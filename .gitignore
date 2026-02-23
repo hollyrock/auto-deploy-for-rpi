@@ -5,6 +5,8 @@ network-config.*
 meta-data.*
 inventory.ini
 firstrun.sh
+private/*
+after_burner.*
 
 # Environments
 .env
